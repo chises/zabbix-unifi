@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.4</version>
+    <template_groups>
+        <template_group>
+            <uuid>f1978336f4e84d2f8a23796b8a04bfe6</uuid>
+            <name>Templates ZBX</name>
+        </template_group>
+    </template_groups>
+    <templates>
+        <template>
+            <uuid>0823a03ce73c40baa7ed9cc3054f755f</uuid>
+            <template>Template UniFi Controller</template>
+            <name>Template UniFi Controller</name>
+            <description>Template to monitor the UniFi Controller via API. Set the macros as needed. Readonly permission are enough.</description>
+            <groups>
+                <group>
+                    <name>Templates ZBX</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>9fd8dc2e9bca44799d40d47798d5d88f</uuid>
+                    <name>Discover UniFi Sites</name>
+                    <type>SCRIPT</type>
+                    <key>unifi.sites</key>
+                    <delay>5m</delay>
+                    <history>7d</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <params>var obj = JSON.parse(value);
+host = obj.host;
+port = obj.port;
+user = obj.user;
+password = obj.password;
+
+var response, login = new HttpRequest();
+login.addHeader('Content-Type: application/x-www-form-urlencoded');
+response = login.post(
+  'https://'+host+':'+port+'/api/login',
+  '{&quot;username&quot;: &quot;'+user+'&quot;, &quot;password&quot;: &quot;'+password+'&quot;}'
+);
+
+if (login.getStatus() !== 200) {
+  throw 'Login failed with status code ' + login.getStatus() + ': ' + response;
+}
+try {
+  response = login.get('https://'+host+':'+port+'/api/stat/sites');
+  response = JSON.parse(response);
+}
+catch (error) {
+  throw 'No JSON Response';
+}
+sites = response.data;
+return JSON.stringify(sites);</params>
+                    <parameters>
+                        <parameter>
+                            <name>port</name>
+                            <value>{$UNIFI_PORT}</value>
+                        </parameter>
+                        <parameter>
+                            <name>user</name>
+                            <value>{$UNIFI_USER}</value>
+                        </parameter>
+                        <parameter>
+                            <name>password</name>
+                            <value>{$UNIFI_PASSWORD}</value>
+                        </parameter>
+                        <parameter>
+                            <name>host</name>
+                            <value>{HOST.CONN}</value>
+                        </parameter>
+                    </parameters>
+                </item>
+                <item>
+                    <uuid>aace83a5186649b39000dcb27edac383</uuid>
+                    <name>UniFi Up2Date Version</name>
+                    <type>SCRIPT</type>
+                    <key>unifi.up2dateVersion</key>
+                    <delay>60m</delay>
+                    <history>30d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <params>var obj = JSON.parse(value);
+url = obj.url;
+
+var response, login = new HttpRequest();
+login.addHeader('Content-Type: application/x-www-form-urlencoded');
+try {
+  response = login.get(url);
+  response = JSON.parse(response);
+}
+catch (error) {
+  throw 'No JSON Response';
+}
+firmware = response._embedded.firmware[0];
+result = firmware.version_major+&quot;.&quot;+firmware.version_minor+&quot;.&quot;+firmware.version_patch;
+return result ;</params>
+                    <description>The current unifi controller Version (Windows Version) provided by webrequest.</description>
+                    <parameters>
+                        <parameter>
+                            <name>url</name>
+                            <value>{$UNIFI_UPDATEURL}</value>
+                        </parameter>
+                    </parameters>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <uuid>f16b902954af4c949c1554534f67875f</uuid>
+                    <name>UniFi Sites Discovery</name>
+                    <type>DEPENDENT</type>
+                    <key>unifi.sites.discovery</key>
+                    <delay>0</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>5d095b973cda4dee8fefb3495434cb7d</uuid>
+                            <name>UniFi Site [{#ID}] Alarms</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.alarms.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].['num_new_alarms'].first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>188b899999de427d99550e0bc3fb588e</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.alarms.[{#ID}])&gt;0</expression>
+                                    <name>UniFi Alarms on {HOSTNAME}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>e41cfb4509d54395be1e51d142128f22</uuid>
+                            <name>UniFi Site [{#ID}] Description</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.desc.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].['desc'].first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>96026d4a6c414020b471abbb45c10c3f</uuid>
+                            <name>UniFi Site [{#ID}] WLAN APs</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.ap.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_ap.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>9df364f28a714d75a1e0db4056603925</uuid>
+                            <name>UniFi Site [{#ID}] WLAN APs adopted</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.aps_adopted.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_adopted.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>1255887b82b34fcc9bb2cc9acfcf2834</uuid>
+                            <name>UniFi Site [{#ID}] WLAN APs disabled</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.aps_disabled.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_disabled.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>122c5fea8af14cc88aaac6bbb467e389</uuid>
+                            <name>UniFi Site [{#ID}] WLAN APs disconnected</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.aps_disconnected.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_disconnected.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>7c3ebe31ffbc461fb2270cf946f09fc8</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])&gt;0</expression>
+                                    <name>UniFi missing {ITEM.LASTVALUE} APs on {HOSTNAME}</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>40f6a6a48d704dcc9f32a8d7d860ea70</uuid>
+                            <name>UniFi Site [{#ID}] WLAN APs pending</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.aps_pending.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_pending.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>2b82f4d94a544f33a9439a31210092b5</uuid>
+                            <name>UniFi Site [{#ID}] WLAN Guests</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.guest.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_guest.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>a082e8a36214422ab7c3a5d80db8e94d</uuid>
+                            <name>UniFi Site [{#ID}] WLAN Status</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.status.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].status.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>4e0643297eed40eea9e0a1ad5db2614f</uuid>
+                            <name>UniFi Site [{#ID}] WLAN User</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wlan.user.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wlan')].num_user.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>308297e1634d43c59352475ac6117908</uuid>
+                            <name>UniFi Site [{#ID}] Name</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].['name'].first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>46d570e396b845cca7915453ce8bf9f5</uuid>
+                            <name>Discover UniFi Site Info [{#ID}]</name>
+                            <type>SCRIPT</type>
+                            <key>unifi.sites.sysinfo.[{#ID}]</key>
+                            <delay>10m</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>TEXT</value_type>
+                            <params>var obj = JSON.parse(value);
+site=obj.site;
+host=obj.host;
+port=obj.port;
+user=obj.user;
+password=obj.password;
+
+var response, login = new HttpRequest();
+login.addHeader('Content-Type: application/x-www-form-urlencoded');
+response = login.post(
+  'https://'+host+':'+port+'/api/login',
+  '{&quot;username&quot;: &quot;'+user+'&quot;, &quot;password&quot;: &quot;'+password+'&quot;}'
+);
+if (login.getStatus() !== 200) {
+  throw 'Login failed with status code ' + login.getStatus() + ': ' + response;
+}
+
+  
+try {
+  response = login.get('https://'+host+':'+port+'/api/s/'+site+'/stat/sysinfo');
+  response = JSON.parse(response);
+}
+catch (error) {
+  throw 'No JSON Response';
+}
+sites = response.data;
+return JSON.stringify(sites);</params>
+                            <parameters>
+                                <parameter>
+                                    <name>site</name>
+                                    <value>{#NAME}</value>
+                                </parameter>
+                                <parameter>
+                                    <name>user</name>
+                                    <value>{$UNIFI_USER}</value>
+                                </parameter>
+                                <parameter>
+                                    <name>password</name>
+                                    <value>{$UNIFI_PASSWORD}</value>
+                                </parameter>
+                                <parameter>
+                                    <name>port</name>
+                                    <value>{$UNIFI_PORT}</value>
+                                </parameter>
+                                <parameter>
+                                    <name>host</name>
+                                    <value>{HOST.CONN}</value>
+                                </parameter>
+                            </parameters>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>d9e88289b4f3484eb99d16766c7a63ce</uuid>
+                            <name>UniFi Site [{#ID}] Unsupported Device Count</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.unsuppoted_device_count.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[*].['unsupported_device_count'].first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites.sysinfo.[{#ID}]</key>
+                            </master_item>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>8d7b08e8767e418b98aeda07305d35df</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.unsuppoted_device_count.[{#ID}])&gt;0</expression>
+                                    <name>UniFi Devices not supported on {HOSTNAME}</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>69866caf71d140f6a152324ceb6c7aca</uuid>
+                            <name>UniFi Site [{#ID}] Version</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.version.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[*].version.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites.sysinfo.[{#ID}]</key>
+                            </master_item>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <uuid>7bcf5b73ccc34b7e9cb6bb61149cbfc2</uuid>
+                            <expression>last(/Template UniFi Controller/unifi.up2dateVersion)&lt;&gt;last(/Template UniFi Controller/unifi.sites.version.[{#ID}])</expression>
+                            <name>UniFi Update pending on {HOSTNAME}</name>
+                            <priority>WARNING</priority>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                    <master_item>
+                        <key>unifi.sites</key>
+                    </master_item>
+                    <preprocessing>
+                        <step>
+                            <type>JAVASCRIPT</type>
+                            <parameters>
+                                <parameter>var result = [];
+var sites = JSON.parse(value);
+sites.forEach(function(site) {
+  result.push({&quot;{#ID}&quot;: site._id, &quot;{#NAME}&quot;: site.name});
+});
+return JSON.stringify(result);</parameter>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$UNIFI_PASSWORD}</macro>
+                    <value>password</value>
+                </macro>
+                <macro>
+                    <macro>{$UNIFI_PORT}</macro>
+                    <value>8443</value>
+                </macro>
+                <macro>
+                    <macro>{$UNIFI_UPDATEURL}</macro>
+                    <value>https://fw-update.ubnt.com/api/firmware-latest?filter=eq~~product~~unifi-controller&amp;filter=eq~~channel~~release&amp;filter=eq~~platform~~windows</value>
+                </macro>
+                <macro>
+                    <macro>{$UNIFI_USER}</macro>
+                    <value>admin</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
