@@ -1,0 +1,395 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    -
+      uuid: f1978336f4e84d2f8a23796b8a04bfe6
+      name: 'Templates ZBX'
+  templates:
+    -
+      uuid: 0823a03ce73c40baa7ed9cc3054f755f
+      template: 'Template UniFi Controller'
+      name: 'Template UniFi Controller'
+      description: 'Template to monitor the UniFi Controller via API. Set the macros as needed. Readonly permission are enough.'
+      groups:
+        -
+          name: 'Templates ZBX'
+      items:
+        -
+          uuid: 9fd8dc2e9bca44799d40d47798d5d88f
+          name: 'Discover UniFi Sites'
+          type: SCRIPT
+          key: unifi.sites
+          delay: 5m
+          history: 7d
+          trends: '0'
+          value_type: TEXT
+          params: |
+            var obj = JSON.parse(value);
+            host = obj.host;
+            port = obj.port;
+            user = obj.user;
+            password = obj.password;
+            
+            var response, login = new HttpRequest();
+            login.addHeader('Content-Type: application/x-www-form-urlencoded');
+            response = login.post(
+              'https://'+host+':'+port+'/api/login',
+              '{"username": "'+user+'", "password": "'+password+'"}'
+            );
+            
+            if (login.getStatus() !== 200) {
+              throw 'Login failed with status code ' + login.getStatus() + ': ' + response;
+            }
+            try {
+              response = login.get('https://'+host+':'+port+'/api/stat/sites');
+              response = JSON.parse(response);
+            }
+            catch (error) {
+              throw 'No JSON Response';
+            }
+            sites = response.data;
+            return JSON.stringify(sites);
+          parameters:
+            -
+              name: port
+              value: '{$UNIFI_PORT}'
+            -
+              name: user
+              value: '{$UNIFI_USER}'
+            -
+              name: password
+              value: '{$UNIFI_PASSWORD}'
+            -
+              name: host
+              value: '{HOST.CONN}'
+        -
+          uuid: aace83a5186649b39000dcb27edac383
+          name: 'UniFi Up2Date Version'
+          type: SCRIPT
+          key: unifi.up2dateVersion
+          delay: 60m
+          history: 30d
+          trends: '0'
+          value_type: CHAR
+          params: |
+            var obj = JSON.parse(value);
+            url = obj.url;
+            
+            var response, login = new HttpRequest();
+            login.addHeader('Content-Type: application/x-www-form-urlencoded');
+            try {
+              response = login.get(url);
+              response = JSON.parse(response);
+            }
+            catch (error) {
+              throw 'No JSON Response';
+            }
+            firmware = response._embedded.firmware[0];
+            result = firmware.version_major+"."+firmware.version_minor+"."+firmware.version_patch;
+            return result ;
+          description: 'The current unifi controller Version (Windows Version) provided by webrequest.'
+          parameters:
+            -
+              name: url
+              value: '{$UNIFI_UPDATEURL}'
+      discovery_rules:
+        -
+          uuid: f16b902954af4c949c1554534f67875f
+          name: 'UniFi Sites Discovery'
+          type: DEPENDENT
+          key: unifi.sites.discovery
+          delay: '0'
+          item_prototypes:
+            -
+              uuid: 5d095b973cda4dee8fefb3495434cb7d
+              name: 'UniFi Site [{#ID}] Alarms'
+              type: DEPENDENT
+              key: 'unifi.sites.alarms.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].[''num_new_alarms''].first()'
+              master_item:
+                key: unifi.sites
+              trigger_prototypes:
+                -
+                  uuid: 188b899999de427d99550e0bc3fb588e
+                  expression: 'last(/Template UniFi Controller/unifi.sites.alarms.[{#ID}])>0'
+                  name: 'UniFi Alarms on {HOSTNAME}'
+                  priority: AVERAGE
+            -
+              uuid: e41cfb4509d54395be1e51d142128f22
+              name: 'UniFi Site [{#ID}] Description'
+              type: DEPENDENT
+              key: 'unifi.sites.desc.[{#ID}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              value_type: TEXT
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].[''desc''].first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 96026d4a6c414020b471abbb45c10c3f
+              name: 'UniFi Site [{#ID}] WLAN APs'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.ap.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_ap.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 9df364f28a714d75a1e0db4056603925
+              name: 'UniFi Site [{#ID}] WLAN APs adopted'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.aps_adopted.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_adopted.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 1255887b82b34fcc9bb2cc9acfcf2834
+              name: 'UniFi Site [{#ID}] WLAN APs disabled'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.aps_disabled.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_disabled.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 122c5fea8af14cc88aaac6bbb467e389
+              name: 'UniFi Site [{#ID}] WLAN APs disconnected'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.aps_disconnected.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_disconnected.first()'
+              master_item:
+                key: unifi.sites
+              trigger_prototypes:
+                -
+                  uuid: 7c3ebe31ffbc461fb2270cf946f09fc8
+                  expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])>0'
+                  name: 'UniFi missing {ITEM.LASTVALUE} APs on {HOSTNAME}'
+                  priority: HIGH
+            -
+              uuid: 40f6a6a48d704dcc9f32a8d7d860ea70
+              name: 'UniFi Site [{#ID}] WLAN APs pending'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.aps_pending.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_pending.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 2b82f4d94a544f33a9439a31210092b5
+              name: 'UniFi Site [{#ID}] WLAN Guests'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.guest.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_guest.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: a082e8a36214422ab7c3a5d80db8e94d
+              name: 'UniFi Site [{#ID}] WLAN Status'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.status.[{#ID}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].status.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 4e0643297eed40eea9e0a1ad5db2614f
+              name: 'UniFi Site [{#ID}] WLAN User'
+              type: DEPENDENT
+              key: 'unifi.sites.name.wlan.user.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_user.first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 308297e1634d43c59352475ac6117908
+              name: 'UniFi Site [{#ID}] Name'
+              type: DEPENDENT
+              key: 'unifi.sites.name.[{#ID}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[?(@.[''_id'']==''{#ID}'')].[''name''].first()'
+              master_item:
+                key: unifi.sites
+            -
+              uuid: 46d570e396b845cca7915453ce8bf9f5
+              name: 'Discover UniFi Site Info [{#ID}]'
+              type: SCRIPT
+              key: 'unifi.sites.sysinfo.[{#ID}]'
+              delay: 10m
+              history: 30d
+              trends: '0'
+              value_type: TEXT
+              params: |
+                var obj = JSON.parse(value);
+                site=obj.site;
+                host=obj.host;
+                port=obj.port;
+                user=obj.user;
+                password=obj.password;
+                
+                var response, login = new HttpRequest();
+                login.addHeader('Content-Type: application/x-www-form-urlencoded');
+                response = login.post(
+                  'https://'+host+':'+port+'/api/login',
+                  '{"username": "'+user+'", "password": "'+password+'"}'
+                );
+                if (login.getStatus() !== 200) {
+                  throw 'Login failed with status code ' + login.getStatus() + ': ' + response;
+                }
+                
+                  
+                try {
+                  response = login.get('https://'+host+':'+port+'/api/s/'+site+'/stat/sysinfo');
+                  response = JSON.parse(response);
+                }
+                catch (error) {
+                  throw 'No JSON Response';
+                }
+                sites = response.data;
+                return JSON.stringify(sites);
+              parameters:
+                -
+                  name: site
+                  value: '{#NAME}'
+                -
+                  name: user
+                  value: '{$UNIFI_USER}'
+                -
+                  name: password
+                  value: '{$UNIFI_PASSWORD}'
+                -
+                  name: port
+                  value: '{$UNIFI_PORT}'
+                -
+                  name: host
+                  value: '{HOST.CONN}'
+            -
+              uuid: d9e88289b4f3484eb99d16766c7a63ce
+              name: 'UniFi Site [{#ID}] Unsupported Device Count'
+              type: DEPENDENT
+              key: 'unifi.sites.unsuppoted_device_count.[{#ID}]'
+              delay: '0'
+              history: 30d
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[*].[''unsupported_device_count''].first()'
+              master_item:
+                key: 'unifi.sites.sysinfo.[{#ID}]'
+              trigger_prototypes:
+                -
+                  uuid: 8d7b08e8767e418b98aeda07305d35df
+                  expression: 'last(/Template UniFi Controller/unifi.sites.unsuppoted_device_count.[{#ID}])>0'
+                  name: 'UniFi Devices not supported on {HOSTNAME}'
+                  priority: HIGH
+            -
+              uuid: 69866caf71d140f6a152324ceb6c7aca
+              name: 'UniFi Site [{#ID}] Version'
+              type: DEPENDENT
+              key: 'unifi.sites.version.[{#ID}]'
+              delay: '0'
+              history: 30d
+              trends: '0'
+              value_type: CHAR
+              preprocessing:
+                -
+                  type: JSONPATH
+                  parameters:
+                    - '$.[*].version.first()'
+              master_item:
+                key: 'unifi.sites.sysinfo.[{#ID}]'
+          trigger_prototypes:
+            -
+              uuid: 7bcf5b73ccc34b7e9cb6bb61149cbfc2
+              expression: 'last(/Template UniFi Controller/unifi.up2dateVersion)<>last(/Template UniFi Controller/unifi.sites.version.[{#ID}])'
+              name: 'UniFi Update pending on {HOSTNAME}'
+              priority: WARNING
+          master_item:
+            key: unifi.sites
+          preprocessing:
+            -
+              type: JAVASCRIPT
+              parameters:
+                - |
+                  var result = [];
+                  var sites = JSON.parse(value);
+                  sites.forEach(function(site) {
+                    result.push({"{#ID}": site._id, "{#NAME}": site.name});
+                  });
+                  return JSON.stringify(result);
+      macros:
+        -
+          macro: '{$UNIFI_PASSWORD}'
+          value: password
+        -
+          macro: '{$UNIFI_PORT}'
+          value: '8443'
+        -
+          macro: '{$UNIFI_UPDATEURL}'
+          value: 'https://fw-update.ubnt.com/api/firmware-latest?filter=eq~~product~~unifi-controller&filter=eq~~channel~~release&filter=eq~~platform~~windows'
+        -
+          macro: '{$UNIFI_USER}'
+          value: admin
