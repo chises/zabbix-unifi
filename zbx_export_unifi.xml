@@ -131,6 +131,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                             <trigger_prototypes>
                                 <trigger_prototype>
                                     <uuid>188b899999de427d99550e0bc3fb588e</uuid>
@@ -160,6 +166,421 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>c87db04ca4b04a24a3ce655cfa5df676</uuid>
+                            <name>UniFi Site [{#ID}] LAN adopted</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.adopted.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_adopted.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>601b502606d5493bb46852e3f9181bd5</uuid>
+                            <name>UniFi Site [{#ID}] LAN disconnected</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.disconnected.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_disconnected.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>8318519c28c64a1bab4ea42c29528ccf</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])&gt;0</expression>
+                                    <name>UniFi LAN Device missing {ITEM.LASTVALUE} APs on {HOSTNAME}</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>2417dbe0669d4bbc837dd65293a83ef4</uuid>
+                            <name>UniFi Site [{#ID}] LAN Guests</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.guest.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_guest.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>0b2ff88fc62b4af1b787c0fac09eb9dc</uuid>
+                            <name>UniFi Site [{#ID}] LAN IOT</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.iot.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_iot.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>40f6a6a48d704dcc9f32a8d7d860ea70</uuid>
+                            <name>UniFi Site [{#ID}] LAN pending</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.pending.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_pending.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>469a123cffe0439792ce97793f3077ac</uuid>
+                            <name>UniFi Site [{#ID}] LAN Status</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.status.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].status.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>8446bf10c648462986dd0a82e5ef0abd</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.lan.status.[{#ID}])&lt;&gt;&quot;ok&quot;</expression>
+                                    <name>UniFi LAN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>925244528e3b433d8fa67c244b68a709</uuid>
+                            <name>UniFi Site [{#ID}] LAN Switches</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.sw.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_sw.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>ea3895bce8b641dfaacf3b208d8be419</uuid>
+                            <name>UniFi Site [{#ID}] LAN User</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.lan.user.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='lan')].num_user.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>039f3fc0f0044855894566f48bb5218a</uuid>
+                            <name>UniFi Site [{#ID}] VPN Status</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.vpn.status.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='vpn')].status.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>2ac6115d2a2e46a1911b4e0f631b1b05</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])=&quot;unknown&quot;</expression>
+                                    <name>UniFi VPN Subsystem is &quot;unknown&quot; on {HOSTNAME}</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>89b862abc38642ceb7abc3570956d9cd</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])&lt;&gt;&quot;ok&quot; and last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
+                                    <name>UniFi VPN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>5c23a7fa26c94bf2b06ed167e08d12e9</uuid>
+                            <name>UniFi Site [{#ID}] WAN Gateways</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wan.gw.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wan')].num_gw.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>d80b289473e844048b5624a19ceadc02</uuid>
+                            <name>UniFi Site [{#ID}] WAN Gateways adopted</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wan.gws_adopted.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wan')].num_adopted.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>5c562cdab82a4919a66718dfc24cf7ab</uuid>
+                            <name>UniFi Site [{#ID}] WAN Gateways disconnected</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wan.gws_disconnected.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wan')].num_disconnected.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>7ac350324bd747c4ab5c92d72aecf9a6</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])&gt;0</expression>
+                                    <name>UniFi Gateways missing {ITEM.LASTVALUE} APs on {HOSTNAME}</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>f427ff8594cb4b7f9e98393c8a3d4c46</uuid>
+                            <name>UniFi Site [{#ID}] WAN Gateways pending</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wan.gws_pending.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wan')].num_pending.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>88de2ac574244d988e4eb64c54bb8951</uuid>
+                            <name>UniFi Site [{#ID}] WAN Status</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.wan.status.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='wan')].status.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>6f34f71aea6245129baa867f6a8ff0cd</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])=&quot;unknown&quot;</expression>
+                                    <name>UniFi WAN Subsystem is &quot;unkown&quot; on {HOSTNAME}</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>bde31e0b09fc40b0b7ae3f25376d7ebf</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quot;ok&quot; and 	
+last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
+                                    <name>UniFi WAN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>96026d4a6c414020b471abbb45c10c3f</uuid>
@@ -179,6 +600,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>9df364f28a714d75a1e0db4056603925</uuid>
@@ -198,6 +625,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>1255887b82b34fcc9bb2cc9acfcf2834</uuid>
@@ -217,6 +650,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>122c5fea8af14cc88aaac6bbb467e389</uuid>
@@ -236,17 +675,23 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                             <trigger_prototypes>
                                 <trigger_prototype>
                                     <uuid>7c3ebe31ffbc461fb2270cf946f09fc8</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi missing {ITEM.LASTVALUE} APs on {HOSTNAME}</name>
+                                    <name>UniFi APs missing {ITEM.LASTVALUE} APs on {HOSTNAME}</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
-                            <uuid>40f6a6a48d704dcc9f32a8d7d860ea70</uuid>
+                            <uuid>d66bcd1bd46740b488a286a0859f3ce4</uuid>
                             <name>UniFi Site [{#ID}] WLAN APs pending</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.aps_pending.[{#ID}]</key>
@@ -263,6 +708,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>2b82f4d94a544f33a9439a31210092b5</uuid>
@@ -282,6 +733,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>a082e8a36214422ab7c3a5d80db8e94d</uuid>
@@ -303,6 +760,26 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>2676bd53cc4243d5bba71c65a3163e7d</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])=&quot;unknown&quot;</expression>
+                                    <name>UniFi WLAN Subsystem is &quot;unkown&quot; on {HOSTNAME}</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>d9de8ea2bc594b2988c578f64e112f42</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])&lt;&gt;&quot;ok&quot; and last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
+                                    <name>UniFi WLAN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>4e0643297eed40eea9e0a1ad5db2614f</uuid>
@@ -322,6 +799,53 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                        </item_prototype>
+                        <item_prototype>
+                            <uuid>9af38f10b1d74a3db4fcce63ba96acbe</uuid>
+                            <name>UniFi Site [{#ID}] WWW Status</name>
+                            <type>DEPENDENT</type>
+                            <key>unifi.sites.name.www.status.[{#ID}]</key>
+                            <delay>0</delay>
+                            <history>30d</history>
+                            <trends>0</trends>
+                            <value_type>CHAR</value_type>
+                            <preprocessing>
+                                <step>
+                                    <type>JSONPATH</type>
+                                    <parameters>
+                                        <parameter>$.[?(@.['_id']=='{#ID}')].health.[?(@.['subsystem']=='www')].status.first()</parameter>
+                                    </parameters>
+                                </step>
+                            </preprocessing>
+                            <master_item>
+                                <key>unifi.sites</key>
+                            </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>7030bb2421b74327a62bbe10aa66f8f0</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])=&quot;unknown&quot;</expression>
+                                    <name>UniFi WWW Subsystem is &quot;unkown&quot; on {HOSTNAME}</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>b90610f0e09e43ada0a25e5d44dd9d6f</uuid>
+                                    <expression>last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])&lt;&gt;&quot;ok&quot; and last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
+                                    <name>UniFi WWW Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>308297e1634d43c59352475ac6117908</uuid>
@@ -343,6 +867,12 @@ return result ;</params>
                             <master_item>
                                 <key>unifi.sites</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>46d570e396b845cca7915453ce8bf9f5</uuid>
@@ -350,7 +880,7 @@ return result ;</params>
                             <type>SCRIPT</type>
                             <key>unifi.sites.sysinfo.[{#ID}]</key>
                             <delay>10m</delay>
-                            <history>30d</history>
+                            <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <params>var obj = JSON.parse(value);
@@ -402,6 +932,12 @@ return JSON.stringify(sites);</params>
                                     <value>{HOST.CONN}</value>
                                 </parameter>
                             </parameters>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
                             <uuid>d9e88289b4f3484eb99d16766c7a63ce</uuid>
@@ -421,6 +957,12 @@ return JSON.stringify(sites);</params>
                             <master_item>
                                 <key>unifi.sites.sysinfo.[{#ID}]</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                             <trigger_prototypes>
                                 <trigger_prototype>
                                     <uuid>8d7b08e8767e418b98aeda07305d35df</uuid>
@@ -450,6 +992,12 @@ return JSON.stringify(sites);</params>
                             <master_item>
                                 <key>unifi.sites.sysinfo.[{#ID}]</key>
                             </master_item>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UniFi</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                     </item_prototypes>
                     <trigger_prototypes>
