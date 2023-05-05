@@ -184,7 +184,7 @@ zabbix_export:
                 -
                   uuid: 8318519c28c64a1bab4ea42c29528ccf
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])>0'
-                  name: 'UniFi LAN missing {ITEM.LASTVALUE} Device on {HOSTNAME}'
+                  name: 'UniFi LAN missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}'
                   priority: HIGH
             -
               uuid: 2417dbe0669d4bbc837dd65293a83ef4
@@ -391,7 +391,7 @@ zabbix_export:
                 -
                   uuid: 7ac350324bd747c4ab5c92d72aecf9a6
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])>0'
-                  name: 'UniFi Gateways missing {ITEM.LASTVALUE} Device on {HOSTNAME}'
+                  name: 'UniFi Gateways missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}'
                   priority: HIGH
             -
               uuid: f427ff8594cb4b7f9e98393c8a3d4c46
@@ -520,7 +520,7 @@ zabbix_export:
                 -
                   uuid: 7c3ebe31ffbc461fb2270cf946f09fc8
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])>0'
-                  name: 'UniFi APs missing {ITEM.LASTVALUE} Device on {HOSTNAME}'
+                  name: 'UniFi APs missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}'
                   priority: HIGH
             -
               uuid: d66bcd1bd46740b488a286a0859f3ce4
