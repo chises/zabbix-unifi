@@ -102,7 +102,7 @@ zabbix_export:
           item_prototypes:
             -
               uuid: 5d095b973cda4dee8fefb3495434cb7d
-              name: 'UniFi Site [{#ID}] Alarms'
+                            name: 'UniFi Site [{#DESC}] Alarms'
               type: DEPENDENT
               key: 'unifi.sites.alarms.[{#ID}]'
               delay: '0'
@@ -122,11 +122,11 @@ zabbix_export:
                 -
                   uuid: 188b899999de427d99550e0bc3fb588e
                   expression: 'last(/Template UniFi Controller/unifi.sites.alarms.[{#ID}])>0'
-                  name: 'UniFi Alarms on {HOSTNAME}'
+                  name: 'UniFi Alarms on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
             -
               uuid: e41cfb4509d54395be1e51d142128f22
-              name: 'UniFi Site [{#ID}] Description'
+              name: 'UniFi Site [{#DESC}] Description'
               type: DEPENDENT
               key: 'unifi.sites.desc.[{#ID}]'
               delay: '0'
@@ -146,7 +146,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: c87db04ca4b04a24a3ce655cfa5df676
-              name: 'UniFi Site [{#ID}] LAN adopted'
+              name: 'UniFi Site [{#DESC}] LAN adopted'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.adopted.[{#ID}]'
               delay: '0'
@@ -164,7 +164,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 601b502606d5493bb46852e3f9181bd5
-              name: 'UniFi Site [{#ID}] LAN disconnected'
+              name: 'UniFi Site [{#DESC}] LAN disconnected'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.disconnected.[{#ID}]'
               delay: '0'
@@ -184,11 +184,11 @@ zabbix_export:
                 -
                   uuid: 8318519c28c64a1bab4ea42c29528ccf
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])>0'
-                  name: 'UniFi LAN missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}'
+                  name: 'UniFi LAN Device missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: 2417dbe0669d4bbc837dd65293a83ef4
-              name: 'UniFi Site [{#ID}] LAN Guests'
+              name: 'UniFi Site [{#DESC}] LAN Guests'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.guest.[{#ID}]'
               delay: '0'
@@ -206,7 +206,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 0b2ff88fc62b4af1b787c0fac09eb9dc
-              name: 'UniFi Site [{#ID}] LAN IOT'
+              name: 'UniFi Site [{#DESC}] LAN IOT'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.iot.[{#ID}]'
               delay: '0'
@@ -224,7 +224,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 40f6a6a48d704dcc9f32a8d7d860ea70
-              name: 'UniFi Site [{#ID}] LAN pending'
+              name: 'UniFi Site [{#DESC}] LAN pending'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.pending.[{#ID}]'
               delay: '0'
@@ -242,7 +242,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 469a123cffe0439792ce97793f3077ac
-              name: 'UniFi Site [{#ID}] LAN Status'
+              name: 'UniFi Site [{#DESC}] LAN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.status.[{#ID}]'
               delay: '0'
@@ -264,11 +264,11 @@ zabbix_export:
                 -
                   uuid: 8446bf10c648462986dd0a82e5ef0abd
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.lan.status.[{#ID}])<>"ok"'
-                  name: 'UniFi LAN Subsystem not "ok" on {HOSTNAME}'
+                  name: 'UniFi LAN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
             -
               uuid: 925244528e3b433d8fa67c244b68a709
-              name: 'UniFi Site [{#ID}] LAN Switches'
+              name: 'UniFi Site [{#DESC}] LAN Switches'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.sw.[{#ID}]'
               delay: '0'
@@ -286,7 +286,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: ea3895bce8b641dfaacf3b208d8be419
-              name: 'UniFi Site [{#ID}] LAN User'
+              name: 'UniFi Site [{#DESC}] LAN User'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.user.[{#ID}]'
               delay: '0'
@@ -304,7 +304,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 039f3fc0f0044855894566f48bb5218a
-              name: 'UniFi Site [{#ID}] VPN Status'
+              name: 'UniFi Site [{#DESC}] VPN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.vpn.status.[{#ID}]'
               delay: '0'
@@ -326,16 +326,16 @@ zabbix_export:
                 -
                   uuid: 2ac6115d2a2e46a1911b4e0f631b1b05
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])="unknown"'
-                  name: 'UniFi VPN Subsystem is "unknown" on {HOSTNAME}'
+                  name: 'UniFi VPN Subsystem is "unknown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
                 -
                   uuid: 89b862abc38642ceb7abc3570956d9cd
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])<>"ok" and last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])<>"unknown"'
-                  name: 'UniFi VPN Subsystem not "ok" on {HOSTNAME}'
+                  name: 'UniFi VPN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
             -
               uuid: 5c23a7fa26c94bf2b06ed167e08d12e9
-              name: 'UniFi Site [{#ID}] WAN Gateways'
+              name: 'UniFi Site [{#DESC}] WAN Gateways'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gw.[{#ID}]'
               delay: '0'
@@ -353,7 +353,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: d80b289473e844048b5624a19ceadc02
-              name: 'UniFi Site [{#ID}] WAN Gateways adopted'
+              name: 'UniFi Site [{#DESC}] WAN Gateways adopted'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gws_adopted.[{#ID}]'
               delay: '0'
@@ -371,7 +371,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 5c562cdab82a4919a66718dfc24cf7ab
-              name: 'UniFi Site [{#ID}] WAN Gateways disconnected'
+              name: 'UniFi Site [{#DESC}] WAN Gateways disconnected'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gws_disconnected.[{#ID}]'
               delay: '0'
@@ -391,11 +391,11 @@ zabbix_export:
                 -
                   uuid: 7ac350324bd747c4ab5c92d72aecf9a6
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])>0'
-                  name: 'UniFi Gateways missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}'
+                  name: 'UniFi Gateways missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: f427ff8594cb4b7f9e98393c8a3d4c46
-              name: 'UniFi Site [{#ID}] WAN Gateways pending'
+              name: 'UniFi Site [{#DESC}] WAN Gateways pending'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gws_pending.[{#ID}]'
               delay: '0'
@@ -413,7 +413,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 88de2ac574244d988e4eb64c54bb8951
-              name: 'UniFi Site [{#ID}] WAN Status'
+              name: 'UniFi Site [{#DESC}] WAN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.status.[{#ID}]'
               delay: '0'
@@ -435,18 +435,18 @@ zabbix_export:
                 -
                   uuid: 6f34f71aea6245129baa867f6a8ff0cd
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])="unknown"'
-                  name: 'UniFi WAN Subsystem is "unkown" on {HOSTNAME}'
+                  name: 'UniFi WAN Subsystem is "unkown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
                 -
                   uuid: bde31e0b09fc40b0b7ae3f25376d7ebf
                   expression: |
                     last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])<>"ok" and 	
                     last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])<>"unknown"
-                  name: 'UniFi WAN Subsystem not "ok" on {HOSTNAME}'
+                  name: 'UniFi WAN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
             -
               uuid: 96026d4a6c414020b471abbb45c10c3f
-              name: 'UniFi Site [{#ID}] WLAN APs'
+              name: 'UniFi Site [{#DESC}] WLAN APs'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.ap.[{#ID}]'
               delay: '0'
@@ -464,7 +464,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 9df364f28a714d75a1e0db4056603925
-              name: 'UniFi Site [{#ID}] WLAN APs adopted'
+              name: 'UniFi Site [{#DESC}] WLAN APs adopted'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_adopted.[{#ID}]'
               delay: '0'
@@ -482,7 +482,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 1255887b82b34fcc9bb2cc9acfcf2834
-              name: 'UniFi Site [{#ID}] WLAN APs disabled'
+              name: 'UniFi Site [{#DESC}] WLAN APs disabled'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_disabled.[{#ID}]'
               delay: '0'
@@ -500,7 +500,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 122c5fea8af14cc88aaac6bbb467e389
-              name: 'UniFi Site [{#ID}] WLAN APs disconnected'
+              name: 'UniFi Site [{#DESC}] WLAN APs disconnected'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_disconnected.[{#ID}]'
               delay: '0'
@@ -520,11 +520,11 @@ zabbix_export:
                 -
                   uuid: 7c3ebe31ffbc461fb2270cf946f09fc8
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])>0'
-                  name: 'UniFi APs missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}'
+                  name: 'UniFi Aps missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: d66bcd1bd46740b488a286a0859f3ce4
-              name: 'UniFi Site [{#ID}] WLAN APs pending'
+              name: 'UniFi Site [{#DESC}] WLAN APs pending'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_pending.[{#ID}]'
               delay: '0'
@@ -542,7 +542,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 2b82f4d94a544f33a9439a31210092b5
-              name: 'UniFi Site [{#ID}] WLAN Guests'
+              name: 'UniFi Site [{#DESC}] WLAN Guests'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.guest.[{#ID}]'
               delay: '0'
@@ -560,7 +560,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: a082e8a36214422ab7c3a5d80db8e94d
-              name: 'UniFi Site [{#ID}] WLAN Status'
+              name: 'UniFi Site [{#DESC}] WLAN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.status.[{#ID}]'
               delay: '0'
@@ -587,11 +587,11 @@ zabbix_export:
                 -
                   uuid: d9de8ea2bc594b2988c578f64e112f42
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])<>"ok" and last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])<>"unknown"'
-                  name: 'UniFi WLAN Subsystem not "ok" on {HOSTNAME}'
+                  name: 'UniFi WLAN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
             -
               uuid: 4e0643297eed40eea9e0a1ad5db2614f
-              name: 'UniFi Site [{#ID}] WLAN User'
+              name: 'UniFi Site [{#DESC}] WLAN User'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.user.[{#ID}]'
               delay: '0'
@@ -609,7 +609,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 9af38f10b1d74a3db4fcce63ba96acbe
-              name: 'UniFi Site [{#ID}] WWW Status'
+              name: 'UniFi Site [{#DESC}] WWW Status'
               type: DEPENDENT
               key: 'unifi.sites.name.www.status.[{#ID}]'
               delay: '0'
@@ -631,16 +631,16 @@ zabbix_export:
                 -
                   uuid: 7030bb2421b74327a62bbe10aa66f8f0
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])="unknown"'
-                  name: 'UniFi WWW Subsystem is "unkown" on {HOSTNAME}'
+                  name: 'UniFi WWW Subsystem is "unkown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
                 -
                   uuid: b90610f0e09e43ada0a25e5d44dd9d6f
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])<>"ok" and last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])<>"unknown"'
-                  name: 'UniFi WWW Subsystem not "ok" on {HOSTNAME}'
+                  name: 'UniFi WWW Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
             -
               uuid: 308297e1634d43c59352475ac6117908
-              name: 'UniFi Site [{#ID}] Name'
+              name: 'UniFi Site [{#DESC}] Name'
               type: DEPENDENT
               key: 'unifi.sites.name.[{#ID}]'
               delay: '0'
@@ -660,7 +660,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: 46d570e396b845cca7915453ce8bf9f5
-              name: 'Discover UniFi Site Info [{#ID}]'
+              name: 'Discover UniFi Site Info [{#DESC}]'
               type: SCRIPT
               key: 'unifi.sites.sysinfo.[{#ID}]'
               delay: 10m
@@ -717,7 +717,7 @@ zabbix_export:
                   value: UniFi
             -
               uuid: d9e88289b4f3484eb99d16766c7a63ce
-              name: 'UniFi Site [{#ID}] Unsupported Device Count'
+              name: 'UniFi Site [{#DESC}] Unsupported Device Count'
               type: DEPENDENT
               key: 'unifi.sites.unsuppoted_device_count.[{#ID}]'
               delay: '0'
@@ -737,11 +737,11 @@ zabbix_export:
                 -
                   uuid: 8d7b08e8767e418b98aeda07305d35df
                   expression: 'last(/Template UniFi Controller/unifi.sites.unsuppoted_device_count.[{#ID}])>0'
-                  name: 'UniFi Devices not supported on {HOSTNAME}'
+                  name: 'UniFi Devices not supported on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: 69866caf71d140f6a152324ceb6c7aca
-              name: 'UniFi Site [{#ID}] Version'
+              name: 'UniFi Site [{#DESC}] Version'
               type: DEPENDENT
               key: 'unifi.sites.version.[{#ID}]'
               delay: '0'
@@ -763,7 +763,7 @@ zabbix_export:
             -
               uuid: 7bcf5b73ccc34b7e9cb6bb61149cbfc2
               expression: 'last(/Template UniFi Controller/unifi.up2dateVersion)<>last(/Template UniFi Controller/unifi.sites.version.[{#ID}])'
-              name: 'UniFi Update pending on {HOSTNAME}'
+              name: 'UniFi Update pending on {HOSTNAME} site [{#DESC}]'
               priority: WARNING
           master_item:
             key: unifi.sites
@@ -775,7 +775,7 @@ zabbix_export:
                   var result = [];
                   var sites = JSON.parse(value);
                   sites.forEach(function(site) {
-                    result.push({"{#ID}": site._id, "{#NAME}": site.name});
+                    result.push({"{#ID}": site._id, "{#DESC}": site.desc});
                   });
                   return JSON.stringify(result);
       macros:

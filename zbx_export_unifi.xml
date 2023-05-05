@@ -115,7 +115,7 @@ return result ;</params>
                     <item_prototypes>
                         <item_prototype>
                             <uuid>5d095b973cda4dee8fefb3495434cb7d</uuid>
-                            <name>UniFi Site [{#ID}] Alarms</name>
+                            <name>UniFi Site [{#DESC}] Alarms</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.alarms.[{#ID}]</key>
                             <delay>0</delay>
@@ -141,14 +141,14 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>188b899999de427d99550e0bc3fb588e</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.alarms.[{#ID}])&gt;0</expression>
-                                    <name>UniFi Alarms on {HOSTNAME}</name>
+                                    <name>UniFi Alarms on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>e41cfb4509d54395be1e51d142128f22</uuid>
-                            <name>UniFi Site [{#ID}] Description</name>
+                            <name>UniFi Site [{#DESC}] Description</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.desc.[{#ID}]</key>
                             <delay>0</delay>
@@ -175,7 +175,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>c87db04ca4b04a24a3ce655cfa5df676</uuid>
-                            <name>UniFi Site [{#ID}] LAN adopted</name>
+                            <name>UniFi Site [{#DESC}] LAN adopted</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.adopted.[{#ID}]</key>
                             <delay>0</delay>
@@ -200,7 +200,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>601b502606d5493bb46852e3f9181bd5</uuid>
-                            <name>UniFi Site [{#ID}] LAN disconnected</name>
+                            <name>UniFi Site [{#DESC}] LAN disconnected</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.disconnected.[{#ID}]</key>
                             <delay>0</delay>
@@ -226,14 +226,14 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>8318519c28c64a1bab4ea42c29528ccf</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi LAN missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}</name>
+                                    <name>UniFi LAN Device missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>2417dbe0669d4bbc837dd65293a83ef4</uuid>
-                            <name>UniFi Site [{#ID}] LAN Guests</name>
+                            <name>UniFi Site [{#DESC}] LAN Guests</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.guest.[{#ID}]</key>
                             <delay>0</delay>
@@ -258,7 +258,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>0b2ff88fc62b4af1b787c0fac09eb9dc</uuid>
-                            <name>UniFi Site [{#ID}] LAN IOT</name>
+                            <name>UniFi Site [{#DESC}] LAN IOT</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.iot.[{#ID}]</key>
                             <delay>0</delay>
@@ -283,7 +283,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>40f6a6a48d704dcc9f32a8d7d860ea70</uuid>
-                            <name>UniFi Site [{#ID}] LAN pending</name>
+                            <name>UniFi Site [{#DESC}] LAN pending</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.pending.[{#ID}]</key>
                             <delay>0</delay>
@@ -308,7 +308,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>469a123cffe0439792ce97793f3077ac</uuid>
-                            <name>UniFi Site [{#ID}] LAN Status</name>
+                            <name>UniFi Site [{#DESC}] LAN Status</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.status.[{#ID}]</key>
                             <delay>0</delay>
@@ -336,14 +336,14 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>8446bf10c648462986dd0a82e5ef0abd</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.lan.status.[{#ID}])&lt;&gt;&quot;ok&quot;</expression>
-                                    <name>UniFi LAN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <name>UniFi LAN Subsystem not &quot;ok&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>925244528e3b433d8fa67c244b68a709</uuid>
-                            <name>UniFi Site [{#ID}] LAN Switches</name>
+                            <name>UniFi Site [{#DESC}] LAN Switches</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.sw.[{#ID}]</key>
                             <delay>0</delay>
@@ -368,7 +368,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>ea3895bce8b641dfaacf3b208d8be419</uuid>
-                            <name>UniFi Site [{#ID}] LAN User</name>
+                            <name>UniFi Site [{#DESC}] LAN User</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.lan.user.[{#ID}]</key>
                             <delay>0</delay>
@@ -393,7 +393,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>039f3fc0f0044855894566f48bb5218a</uuid>
-                            <name>UniFi Site [{#ID}] VPN Status</name>
+                            <name>UniFi Site [{#DESC}] VPN Status</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.vpn.status.[{#ID}]</key>
                             <delay>0</delay>
@@ -421,20 +421,20 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>2ac6115d2a2e46a1911b4e0f631b1b05</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])=&quot;unknown&quot;</expression>
-                                    <name>UniFi VPN Subsystem is &quot;unknown&quot; on {HOSTNAME}</name>
+                                    <name>UniFi VPN Subsystem is &quot;unknown&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>INFO</priority>
                                 </trigger_prototype>
                                 <trigger_prototype>
                                     <uuid>89b862abc38642ceb7abc3570956d9cd</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])&lt;&gt;&quot;ok&quot; and last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
-                                    <name>UniFi VPN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <name>UniFi VPN Subsystem not &quot;ok&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>5c23a7fa26c94bf2b06ed167e08d12e9</uuid>
-                            <name>UniFi Site [{#ID}] WAN Gateways</name>
+                            <name>UniFi Site [{#DESC}] WAN Gateways</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wan.gw.[{#ID}]</key>
                             <delay>0</delay>
@@ -459,7 +459,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>d80b289473e844048b5624a19ceadc02</uuid>
-                            <name>UniFi Site [{#ID}] WAN Gateways adopted</name>
+                            <name>UniFi Site [{#DESC}] WAN Gateways adopted</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wan.gws_adopted.[{#ID}]</key>
                             <delay>0</delay>
@@ -484,7 +484,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>5c562cdab82a4919a66718dfc24cf7ab</uuid>
-                            <name>UniFi Site [{#ID}] WAN Gateways disconnected</name>
+                            <name>UniFi Site [{#DESC}] WAN Gateways disconnected</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wan.gws_disconnected.[{#ID}]</key>
                             <delay>0</delay>
@@ -510,14 +510,14 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>7ac350324bd747c4ab5c92d72aecf9a6</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi Gateways missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}</name>
+                                    <name>UniFi Gateways missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>f427ff8594cb4b7f9e98393c8a3d4c46</uuid>
-                            <name>UniFi Site [{#ID}] WAN Gateways pending</name>
+                            <name>UniFi Site [{#DESC}] WAN Gateways pending</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wan.gws_pending.[{#ID}]</key>
                             <delay>0</delay>
@@ -542,7 +542,7 @@ return result ;</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>88de2ac574244d988e4eb64c54bb8951</uuid>
-                            <name>UniFi Site [{#ID}] WAN Status</name>
+                            <name>UniFi Site [{#DESC}] WAN Status</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wan.status.[{#ID}]</key>
                             <delay>0</delay>
@@ -570,21 +570,21 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>6f34f71aea6245129baa867f6a8ff0cd</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])=&quot;unknown&quot;</expression>
-                                    <name>UniFi WAN Subsystem is &quot;unkown&quot; on {HOSTNAME}</name>
+                                    <name>UniFi WAN Subsystem is &quot;unkown&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>INFO</priority>
                                 </trigger_prototype>
                                 <trigger_prototype>
                                     <uuid>bde31e0b09fc40b0b7ae3f25376d7ebf</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quot;ok&quot; and 	
 last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
-                                    <name>UniFi WAN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <name>UniFi WAN Subsystem not &quot;ok&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>96026d4a6c414020b471abbb45c10c3f</uuid>
-                            <name>UniFi Site [{#ID}] WLAN APs</name>
+                            <name>UniFi Site [{#DESC}] WLAN APs</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.ap.[{#ID}]</key>
                             <delay>0</delay>
@@ -609,7 +609,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>9df364f28a714d75a1e0db4056603925</uuid>
-                            <name>UniFi Site [{#ID}] WLAN APs adopted</name>
+                            <name>UniFi Site [{#DESC}] WLAN APs adopted</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.aps_adopted.[{#ID}]</key>
                             <delay>0</delay>
@@ -634,7 +634,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>1255887b82b34fcc9bb2cc9acfcf2834</uuid>
-                            <name>UniFi Site [{#ID}] WLAN APs disabled</name>
+                            <name>UniFi Site [{#DESC}] WLAN APs disabled</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.aps_disabled.[{#ID}]</key>
                             <delay>0</delay>
@@ -659,7 +659,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>122c5fea8af14cc88aaac6bbb467e389</uuid>
-                            <name>UniFi Site [{#ID}] WLAN APs disconnected</name>
+                            <name>UniFi Site [{#DESC}] WLAN APs disconnected</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.aps_disconnected.[{#ID}]</key>
                             <delay>0</delay>
@@ -685,14 +685,14 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                                 <trigger_prototype>
                                     <uuid>7c3ebe31ffbc461fb2270cf946f09fc8</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi APs missing {ITEM.LASTVALUE} device(s) on {HOSTNAME}</name>
+                                    <name>UniFi Aps missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>d66bcd1bd46740b488a286a0859f3ce4</uuid>
-                            <name>UniFi Site [{#ID}] WLAN APs pending</name>
+                            <name>UniFi Site [{#DESC}] WLAN APs pending</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.aps_pending.[{#ID}]</key>
                             <delay>0</delay>
@@ -717,7 +717,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>2b82f4d94a544f33a9439a31210092b5</uuid>
-                            <name>UniFi Site [{#ID}] WLAN Guests</name>
+                            <name>UniFi Site [{#DESC}] WLAN Guests</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.guest.[{#ID}]</key>
                             <delay>0</delay>
@@ -742,7 +742,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>a082e8a36214422ab7c3a5d80db8e94d</uuid>
-                            <name>UniFi Site [{#ID}] WLAN Status</name>
+                            <name>UniFi Site [{#DESC}] WLAN Status</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.status.[{#ID}]</key>
                             <delay>0</delay>
@@ -776,14 +776,14 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                                 <trigger_prototype>
                                     <uuid>d9de8ea2bc594b2988c578f64e112f42</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])&lt;&gt;&quot;ok&quot; and last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
-                                    <name>UniFi WLAN Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <name>UniFi WLAN Subsystem not &quot;ok&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>4e0643297eed40eea9e0a1ad5db2614f</uuid>
-                            <name>UniFi Site [{#ID}] WLAN User</name>
+                            <name>UniFi Site [{#DESC}] WLAN User</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.wlan.user.[{#ID}]</key>
                             <delay>0</delay>
@@ -808,7 +808,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>9af38f10b1d74a3db4fcce63ba96acbe</uuid>
-                            <name>UniFi Site [{#ID}] WWW Status</name>
+                            <name>UniFi Site [{#DESC}] WWW Status</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.www.status.[{#ID}]</key>
                             <delay>0</delay>
@@ -836,20 +836,20 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                                 <trigger_prototype>
                                     <uuid>7030bb2421b74327a62bbe10aa66f8f0</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])=&quot;unknown&quot;</expression>
-                                    <name>UniFi WWW Subsystem is &quot;unkown&quot; on {HOSTNAME}</name>
+                                    <name>UniFi WWW Subsystem is &quot;unkown&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>INFO</priority>
                                 </trigger_prototype>
                                 <trigger_prototype>
                                     <uuid>b90610f0e09e43ada0a25e5d44dd9d6f</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])&lt;&gt;&quot;ok&quot; and last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])&lt;&gt;&quot;unknown&quot;</expression>
-                                    <name>UniFi WWW Subsystem not &quot;ok&quot; on {HOSTNAME}</name>
+                                    <name>UniFi WWW Subsystem not &quot;ok&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>308297e1634d43c59352475ac6117908</uuid>
-                            <name>UniFi Site [{#ID}] Name</name>
+                            <name>UniFi Site [{#DESC}] Name</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.name.[{#ID}]</key>
                             <delay>0</delay>
@@ -876,7 +876,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                         </item_prototype>
                         <item_prototype>
                             <uuid>46d570e396b845cca7915453ce8bf9f5</uuid>
-                            <name>Discover UniFi Site Info [{#ID}]</name>
+                            <name>Discover UniFi Site Info [{#DESC}]</name>
                             <type>SCRIPT</type>
                             <key>unifi.sites.sysinfo.[{#ID}]</key>
                             <delay>10m</delay>
@@ -941,7 +941,7 @@ return JSON.stringify(sites);</params>
                         </item_prototype>
                         <item_prototype>
                             <uuid>d9e88289b4f3484eb99d16766c7a63ce</uuid>
-                            <name>UniFi Site [{#ID}] Unsupported Device Count</name>
+                            <name>UniFi Site [{#DESC}] Unsupported Device Count</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.unsuppoted_device_count.[{#ID}]</key>
                             <delay>0</delay>
@@ -967,14 +967,14 @@ return JSON.stringify(sites);</params>
                                 <trigger_prototype>
                                     <uuid>8d7b08e8767e418b98aeda07305d35df</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.unsuppoted_device_count.[{#ID}])&gt;0</expression>
-                                    <name>UniFi Devices not supported on {HOSTNAME}</name>
+                                    <name>UniFi Devices not supported on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <uuid>69866caf71d140f6a152324ceb6c7aca</uuid>
-                            <name>UniFi Site [{#ID}] Version</name>
+                            <name>UniFi Site [{#DESC}] Version</name>
                             <type>DEPENDENT</type>
                             <key>unifi.sites.version.[{#ID}]</key>
                             <delay>0</delay>
@@ -1004,7 +1004,7 @@ return JSON.stringify(sites);</params>
                         <trigger_prototype>
                             <uuid>7bcf5b73ccc34b7e9cb6bb61149cbfc2</uuid>
                             <expression>last(/Template UniFi Controller/unifi.up2dateVersion)&lt;&gt;last(/Template UniFi Controller/unifi.sites.version.[{#ID}])</expression>
-                            <name>UniFi Update pending on {HOSTNAME}</name>
+                            <name>UniFi Update pending on {HOSTNAME} site [{#DESC}]</name>
                             <priority>WARNING</priority>
                         </trigger_prototype>
                     </trigger_prototypes>
@@ -1018,7 +1018,7 @@ return JSON.stringify(sites);</params>
                                 <parameter>var result = [];
 var sites = JSON.parse(value);
 sites.forEach(function(site) {
-  result.push({&quot;{#ID}&quot;: site._id, &quot;{#NAME}&quot;: site.name});
+  result.push({&quot;{#ID}&quot;: site._id, &quot;{#DESC}&quot;: site.desc});
 });
 return JSON.stringify(result);</parameter>
                             </parameters>
