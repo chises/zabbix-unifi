@@ -102,7 +102,7 @@ zabbix_export:
           item_prototypes:
             -
               uuid: 5d095b973cda4dee8fefb3495434cb7d
-                            name: 'UniFi Site [{#DESC}] Alarms'
+              name: 'UniFi Site [{#DESC}] Alarms'
               type: DEPENDENT
               key: 'unifi.sites.alarms.[{#ID}]'
               delay: '0'
