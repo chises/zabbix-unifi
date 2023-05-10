@@ -184,7 +184,7 @@ zabbix_export:
                 -
                   uuid: 8318519c28c64a1bab4ea42c29528ccf
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])>0'
-                  name: 'UniFi LAN Device missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]'
+                  name: 'UniFi LAN missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: 2417dbe0669d4bbc837dd65293a83ef4
@@ -391,7 +391,7 @@ zabbix_export:
                 -
                   uuid: 7ac350324bd747c4ab5c92d72aecf9a6
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])>0'
-                  name: 'UniFi Gateways missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]'
+                  name: 'UniFi Gateways missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: f427ff8594cb4b7f9e98393c8a3d4c46
@@ -520,7 +520,7 @@ zabbix_export:
                 -
                   uuid: 7c3ebe31ffbc461fb2270cf946f09fc8
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])>0'
-                  name: 'UniFi Aps missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]'
+                  name: 'UniFi Aps missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
             -
               uuid: d66bcd1bd46740b488a286a0859f3ce4
@@ -582,7 +582,7 @@ zabbix_export:
                 -
                   uuid: 2676bd53cc4243d5bba71c65a3163e7d
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])="unknown"'
-                  name: 'UniFi WLAN Subsystem is "unkown" on {HOSTNAME}'
+                  name: 'UniFi WLAN Subsystem is "unkown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
                 -
                   uuid: d9de8ea2bc594b2988c578f64e112f42
