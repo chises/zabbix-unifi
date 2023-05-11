@@ -226,7 +226,7 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>8318519c28c64a1bab4ea42c29528ccf</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi LAN Device missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]</name>
+                                    <name>UniFi LAN missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
@@ -510,7 +510,7 @@ return result ;</params>
                                 <trigger_prototype>
                                     <uuid>7ac350324bd747c4ab5c92d72aecf9a6</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi Gateways missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]</name>
+                                    <name>UniFi Gateways missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
@@ -685,7 +685,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                                 <trigger_prototype>
                                     <uuid>7c3ebe31ffbc461fb2270cf946f09fc8</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])&gt;0</expression>
-                                    <name>UniFi Aps missing {ITEM.LASTVALUE} APs on {HOSTNAME} site [{#DESC}]</name>
+                                    <name>UniFi Aps missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>HIGH</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
@@ -770,7 +770,7 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                                 <trigger_prototype>
                                     <uuid>2676bd53cc4243d5bba71c65a3163e7d</uuid>
                                     <expression>last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])=&quot;unknown&quot;</expression>
-                                    <name>UniFi WLAN Subsystem is &quot;unkown&quot; on {HOSTNAME}</name>
+                                    <name>UniFi WLAN Subsystem is &quot;unkown&quot; on {HOSTNAME} site [{#DESC}]</name>
                                     <priority>INFO</priority>
                                 </trigger_prototype>
                                 <trigger_prototype>
