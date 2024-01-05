@@ -55,20 +55,20 @@ sites = response.data;
 return JSON.stringify(sites);</params>
                     <parameters>
                         <parameter>
-                            <name>port</name>
-                            <value>{$UNIFI_PORT}</value>
-                        </parameter>
-                        <parameter>
-                            <name>user</name>
-                            <value>{$UNIFI_USER}</value>
+                            <name>host</name>
+                            <value>{HOST.CONN}</value>
                         </parameter>
                         <parameter>
                             <name>password</name>
                             <value>{$UNIFI_PASSWORD}</value>
                         </parameter>
                         <parameter>
-                            <name>host</name>
-                            <value>{HOST.CONN}</value>
+                            <name>port</name>
+                            <value>{$UNIFI_PORT}</value>
+                        </parameter>
+                        <parameter>
+                            <name>user</name>
+                            <value>{$UNIFI_USER}</value>
                         </parameter>
                     </parameters>
                 </item>
@@ -884,11 +884,6 @@ last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])&lt;&gt;&quo
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <params>var obj = JSON.parse(value);
-site=obj.site;
-host=obj.host;
-port=obj.port;
-user=obj.user;
-password=obj.password;
 
 var response, login = new HttpRequest();
 login.addHeader('Content-Type: application/x-www-form-urlencoded');
@@ -900,24 +895,21 @@ if (login.getStatus() !== 200) {
   throw 'Login failed with status code ' + login.getStatus() + ': ' + response;
 }
 
-  
+site = '{#NAME}'
 try {
-  response = login.get('https://'+host+':'+port+'/api/s/'+site+'/stat/sysinfo');
+  url = 'https://'+host+':'+port+'/api/s/'+site+'/stat/sysinfo'
+  response = login.get(url);
   response = JSON.parse(response);
 }
 catch (error) {
-  throw 'No JSON Response';
+  throw 'No JSON Response from: '+url;
 }
 sites = response.data;
 return JSON.stringify(sites);</params>
                             <parameters>
                                 <parameter>
-                                    <name>site</name>
-                                    <value>{#NAME}</value>
-                                </parameter>
-                                <parameter>
-                                    <name>user</name>
-                                    <value>{$UNIFI_USER}</value>
+                                    <name>host</name>
+                                    <value>{HOST.CONN}</value>
                                 </parameter>
                                 <parameter>
                                     <name>password</name>
@@ -928,8 +920,8 @@ return JSON.stringify(sites);</params>
                                     <value>{$UNIFI_PORT}</value>
                                 </parameter>
                                 <parameter>
-                                    <name>host</name>
-                                    <value>{HOST.CONN}</value>
+                                    <name>user</name>
+                                    <value>{$UNIFI_USER}</value>
                                 </parameter>
                             </parameters>
                             <tags>
@@ -1018,7 +1010,7 @@ return JSON.stringify(sites);</params>
                                 <parameter>var result = [];
 var sites = JSON.parse(value);
 sites.forEach(function(site) {
-  result.push({&quot;{#ID}&quot;: site._id, &quot;{#DESC}&quot;: site.desc});
+  result.push({&quot;{#ID}&quot;: site._id, &quot;{#DESC}&quot;: site.desc, &quot;{#NAME}&quot;: site.name});
 });
 return JSON.stringify(result);</parameter>
                             </parameters>
