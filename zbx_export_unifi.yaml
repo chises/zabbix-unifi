@@ -1,21 +1,17 @@
 zabbix_export:
   version: '6.4'
   template_groups:
-    -
-      uuid: f1978336f4e84d2f8a23796b8a04bfe6
+    - uuid: f1978336f4e84d2f8a23796b8a04bfe6
       name: 'Templates ZBX'
   templates:
-    -
-      uuid: 0823a03ce73c40baa7ed9cc3054f755f
+    - uuid: 0823a03ce73c40baa7ed9cc3054f755f
       template: 'Template UniFi Controller'
       name: 'Template UniFi Controller'
       description: 'Template to monitor the UniFi Controller via API. Set the macros as needed. Readonly permission are enough.'
       groups:
-        -
-          name: 'Templates ZBX'
+        - name: 'Templates ZBX'
       items:
-        -
-          uuid: 9fd8dc2e9bca44799d40d47798d5d88f
+        - uuid: 9fd8dc2e9bca44799d40d47798d5d88f
           name: 'Discover UniFi Sites'
           type: SCRIPT
           key: unifi.sites
@@ -50,20 +46,15 @@ zabbix_export:
             sites = response.data;
             return JSON.stringify(sites);
           parameters:
-            -
-              name: port
-              value: '{$UNIFI_PORT}'
-            -
-              name: user
-              value: '{$UNIFI_USER}'
-            -
-              name: password
-              value: '{$UNIFI_PASSWORD}'
-            -
-              name: host
+            - name: host
               value: '{HOST.CONN}'
-        -
-          uuid: aace83a5186649b39000dcb27edac383
+            - name: password
+              value: '{$UNIFI_PASSWORD}'
+            - name: port
+              value: '{$UNIFI_PORT}'
+            - name: user
+              value: '{$UNIFI_USER}'
+        - uuid: aace83a5186649b39000dcb27edac383
           name: 'UniFi Up2Date Version'
           type: SCRIPT
           key: unifi.up2dateVersion
@@ -89,43 +80,36 @@ zabbix_export:
             return result ;
           description: 'The current unifi controller Version (Windows Version) provided by webrequest.'
           parameters:
-            -
-              name: url
+            - name: url
               value: '{$UNIFI_UPDATEURL}'
       discovery_rules:
-        -
-          uuid: f16b902954af4c949c1554534f67875f
+        - uuid: f16b902954af4c949c1554534f67875f
           name: 'UniFi Sites Discovery'
           type: DEPENDENT
           key: unifi.sites.discovery
           delay: '0'
           item_prototypes:
-            -
-              uuid: 5d095b973cda4dee8fefb3495434cb7d
+            - uuid: 5d095b973cda4dee8fefb3495434cb7d
               name: 'UniFi Site [{#DESC}] Alarms'
               type: DEPENDENT
               key: 'unifi.sites.alarms.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].[''num_new_alarms''].first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 188b899999de427d99550e0bc3fb588e
+                - uuid: 188b899999de427d99550e0bc3fb588e
                   expression: 'last(/Template UniFi Controller/unifi.sites.alarms.[{#ID}])>0'
                   name: 'UniFi Alarms on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
-            -
-              uuid: e41cfb4509d54395be1e51d142128f22
+            - uuid: e41cfb4509d54395be1e51d142128f22
               name: 'UniFi Site [{#DESC}] Description'
               type: DEPENDENT
               key: 'unifi.sites.desc.[{#ID}]'
@@ -134,114 +118,95 @@ zabbix_export:
               trends: '0'
               value_type: TEXT
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].[''desc''].first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: c87db04ca4b04a24a3ce655cfa5df676
+            - uuid: c87db04ca4b04a24a3ce655cfa5df676
               name: 'UniFi Site [{#DESC}] LAN adopted'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.adopted.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_adopted.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 601b502606d5493bb46852e3f9181bd5
+            - uuid: 601b502606d5493bb46852e3f9181bd5
               name: 'UniFi Site [{#DESC}] LAN disconnected'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.disconnected.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_disconnected.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 8318519c28c64a1bab4ea42c29528ccf
+                - uuid: 8318519c28c64a1bab4ea42c29528ccf
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.lan.disconnected.[{#ID}])>0'
                   name: 'UniFi LAN missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
-            -
-              uuid: 2417dbe0669d4bbc837dd65293a83ef4
+            - uuid: 2417dbe0669d4bbc837dd65293a83ef4
               name: 'UniFi Site [{#DESC}] LAN Guests'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.guest.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_guest.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 0b2ff88fc62b4af1b787c0fac09eb9dc
+            - uuid: 0b2ff88fc62b4af1b787c0fac09eb9dc
               name: 'UniFi Site [{#DESC}] LAN IOT'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.iot.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_iot.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 40f6a6a48d704dcc9f32a8d7d860ea70
+            - uuid: 40f6a6a48d704dcc9f32a8d7d860ea70
               name: 'UniFi Site [{#DESC}] LAN pending'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.pending.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_pending.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 469a123cffe0439792ce97793f3077ac
+            - uuid: 469a123cffe0439792ce97793f3077ac
               name: 'UniFi Site [{#DESC}] LAN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.status.[{#ID}]'
@@ -250,60 +215,50 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].status.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 8446bf10c648462986dd0a82e5ef0abd
+                - uuid: 8446bf10c648462986dd0a82e5ef0abd
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.lan.status.[{#ID}])<>"ok"'
                   name: 'UniFi LAN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
-            -
-              uuid: 925244528e3b433d8fa67c244b68a709
+            - uuid: 925244528e3b433d8fa67c244b68a709
               name: 'UniFi Site [{#DESC}] LAN Switches'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.sw.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_sw.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: ea3895bce8b641dfaacf3b208d8be419
+            - uuid: ea3895bce8b641dfaacf3b208d8be419
               name: 'UniFi Site [{#DESC}] LAN User'
               type: DEPENDENT
               key: 'unifi.sites.name.lan.user.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''lan'')].num_user.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 039f3fc0f0044855894566f48bb5218a
+            - uuid: 039f3fc0f0044855894566f48bb5218a
               name: 'UniFi Site [{#DESC}] VPN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.vpn.status.[{#ID}]'
@@ -312,107 +267,89 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''vpn'')].status.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 2ac6115d2a2e46a1911b4e0f631b1b05
+                - uuid: 2ac6115d2a2e46a1911b4e0f631b1b05
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])="unknown"'
                   name: 'UniFi VPN Subsystem is "unknown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
-                -
-                  uuid: 89b862abc38642ceb7abc3570956d9cd
+                - uuid: 89b862abc38642ceb7abc3570956d9cd
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])<>"ok" and last(/Template UniFi Controller/unifi.sites.name.vpn.status.[{#ID}])<>"unknown"'
                   name: 'UniFi VPN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
-            -
-              uuid: 5c23a7fa26c94bf2b06ed167e08d12e9
+            - uuid: 5c23a7fa26c94bf2b06ed167e08d12e9
               name: 'UniFi Site [{#DESC}] WAN Gateways'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gw.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wan'')].num_gw.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: d80b289473e844048b5624a19ceadc02
+            - uuid: d80b289473e844048b5624a19ceadc02
               name: 'UniFi Site [{#DESC}] WAN Gateways adopted'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gws_adopted.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wan'')].num_adopted.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 5c562cdab82a4919a66718dfc24cf7ab
+            - uuid: 5c562cdab82a4919a66718dfc24cf7ab
               name: 'UniFi Site [{#DESC}] WAN Gateways disconnected'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gws_disconnected.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wan'')].num_disconnected.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 7ac350324bd747c4ab5c92d72aecf9a6
+                - uuid: 7ac350324bd747c4ab5c92d72aecf9a6
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wan.gws_disconnected.[{#ID}])>0'
                   name: 'UniFi Gateways missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
-            -
-              uuid: f427ff8594cb4b7f9e98393c8a3d4c46
+            - uuid: f427ff8594cb4b7f9e98393c8a3d4c46
               name: 'UniFi Site [{#DESC}] WAN Gateways pending'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.gws_pending.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wan'')].num_pending.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 88de2ac574244d988e4eb64c54bb8951
+            - uuid: 88de2ac574244d988e4eb64c54bb8951
               name: 'UniFi Site [{#DESC}] WAN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.wan.status.[{#ID}]'
@@ -421,145 +358,121 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wan'')].status.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 6f34f71aea6245129baa867f6a8ff0cd
+                - uuid: 6f34f71aea6245129baa867f6a8ff0cd
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])="unknown"'
                   name: 'UniFi WAN Subsystem is "unkown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
-                -
-                  uuid: bde31e0b09fc40b0b7ae3f25376d7ebf
+                - uuid: bde31e0b09fc40b0b7ae3f25376d7ebf
                   expression: |
                     last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])<>"ok" and 	
                     last(/Template UniFi Controller/unifi.sites.name.wan.status.[{#ID}])<>"unknown"
                   name: 'UniFi WAN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
-            -
-              uuid: 96026d4a6c414020b471abbb45c10c3f
+            - uuid: 96026d4a6c414020b471abbb45c10c3f
               name: 'UniFi Site [{#DESC}] WLAN APs'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.ap.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_ap.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 9df364f28a714d75a1e0db4056603925
+            - uuid: 9df364f28a714d75a1e0db4056603925
               name: 'UniFi Site [{#DESC}] WLAN APs adopted'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_adopted.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_adopted.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 1255887b82b34fcc9bb2cc9acfcf2834
+            - uuid: 1255887b82b34fcc9bb2cc9acfcf2834
               name: 'UniFi Site [{#DESC}] WLAN APs disabled'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_disabled.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_disabled.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 122c5fea8af14cc88aaac6bbb467e389
+            - uuid: 122c5fea8af14cc88aaac6bbb467e389
               name: 'UniFi Site [{#DESC}] WLAN APs disconnected'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_disconnected.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_disconnected.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 7c3ebe31ffbc461fb2270cf946f09fc8
+                - uuid: 7c3ebe31ffbc461fb2270cf946f09fc8
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.aps_disconnected.[{#ID}])>0'
                   name: 'UniFi Aps missing {ITEM.LASTVALUE} device(s) on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
-            -
-              uuid: d66bcd1bd46740b488a286a0859f3ce4
+            - uuid: d66bcd1bd46740b488a286a0859f3ce4
               name: 'UniFi Site [{#DESC}] WLAN APs pending'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.aps_pending.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_pending.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 2b82f4d94a544f33a9439a31210092b5
+            - uuid: 2b82f4d94a544f33a9439a31210092b5
               name: 'UniFi Site [{#DESC}] WLAN Guests'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.guest.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_guest.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: a082e8a36214422ab7c3a5d80db8e94d
+            - uuid: a082e8a36214422ab7c3a5d80db8e94d
               name: 'UniFi Site [{#DESC}] WLAN Status'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.status.[{#ID}]'
@@ -568,47 +481,39 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].status.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 2676bd53cc4243d5bba71c65a3163e7d
+                - uuid: 2676bd53cc4243d5bba71c65a3163e7d
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])="unknown"'
                   name: 'UniFi WLAN Subsystem is "unkown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
-                -
-                  uuid: d9de8ea2bc594b2988c578f64e112f42
+                - uuid: d9de8ea2bc594b2988c578f64e112f42
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])<>"ok" and last(/Template UniFi Controller/unifi.sites.name.wlan.status.[{#ID}])<>"unknown"'
                   name: 'UniFi WLAN Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
-            -
-              uuid: 4e0643297eed40eea9e0a1ad5db2614f
+            - uuid: 4e0643297eed40eea9e0a1ad5db2614f
               name: 'UniFi Site [{#DESC}] WLAN User'
               type: DEPENDENT
               key: 'unifi.sites.name.wlan.user.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''wlan'')].num_user.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 9af38f10b1d74a3db4fcce63ba96acbe
+            - uuid: 9af38f10b1d74a3db4fcce63ba96acbe
               name: 'UniFi Site [{#DESC}] WWW Status'
               type: DEPENDENT
               key: 'unifi.sites.name.www.status.[{#ID}]'
@@ -617,29 +522,24 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].health.[?(@.[''subsystem'']==''www'')].status.first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 7030bb2421b74327a62bbe10aa66f8f0
+                - uuid: 7030bb2421b74327a62bbe10aa66f8f0
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])="unknown"'
                   name: 'UniFi WWW Subsystem is "unkown" on {HOSTNAME} site [{#DESC}]'
                   priority: INFO
-                -
-                  uuid: b90610f0e09e43ada0a25e5d44dd9d6f
+                - uuid: b90610f0e09e43ada0a25e5d44dd9d6f
                   expression: 'last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])<>"ok" and last(/Template UniFi Controller/unifi.sites.name.www.status.[{#ID}])<>"unknown"'
                   name: 'UniFi WWW Subsystem not "ok" on {HOSTNAME} site [{#DESC}]'
                   priority: AVERAGE
-            -
-              uuid: 308297e1634d43c59352475ac6117908
+            - uuid: 308297e1634d43c59352475ac6117908
               name: 'UniFi Site [{#DESC}] Name'
               type: DEPENDENT
               key: 'unifi.sites.name.[{#ID}]'
@@ -648,18 +548,15 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[?(@.[''_id'']==''{#ID}'')].[''name''].first()'
               master_item:
                 key: unifi.sites
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: 46d570e396b845cca7915453ce8bf9f5
+            - uuid: 46d570e396b845cca7915453ce8bf9f5
               name: 'Discover UniFi Site Info [{#DESC}]'
               type: SCRIPT
               key: 'unifi.sites.sysinfo.[{#ID}]'
@@ -669,11 +566,6 @@ zabbix_export:
               value_type: TEXT
               params: |
                 var obj = JSON.parse(value);
-                site=obj.site;
-                host=obj.host;
-                port=obj.port;
-                user=obj.user;
-                password=obj.password;
                 
                 var response, login = new HttpRequest();
                 login.addHeader('Content-Type: application/x-www-form-urlencoded');
@@ -685,62 +577,50 @@ zabbix_export:
                   throw 'Login failed with status code ' + login.getStatus() + ': ' + response;
                 }
                 
-                  
+                site = '{#NAME}'
                 try {
-                  response = login.get('https://'+host+':'+port+'/api/s/'+site+'/stat/sysinfo');
+                  url = 'https://'+host+':'+port+'/api/s/'+site+'/stat/sysinfo'
+                  response = login.get(url);
                   response = JSON.parse(response);
                 }
                 catch (error) {
-                  throw 'No JSON Response';
+                  throw 'No JSON Response from: '+url;
                 }
                 sites = response.data;
                 return JSON.stringify(sites);
               parameters:
-                -
-                  name: site
-                  value: '{#NAME}'
-                -
-                  name: user
-                  value: '{$UNIFI_USER}'
-                -
-                  name: password
-                  value: '{$UNIFI_PASSWORD}'
-                -
-                  name: port
-                  value: '{$UNIFI_PORT}'
-                -
-                  name: host
+                - name: host
                   value: '{HOST.CONN}'
+                - name: password
+                  value: '{$UNIFI_PASSWORD}'
+                - name: port
+                  value: '{$UNIFI_PORT}'
+                - name: user
+                  value: '{$UNIFI_USER}'
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
-            -
-              uuid: d9e88289b4f3484eb99d16766c7a63ce
+            - uuid: d9e88289b4f3484eb99d16766c7a63ce
               name: 'UniFi Site [{#DESC}] Unsupported Device Count'
               type: DEPENDENT
               key: 'unifi.sites.unsuppoted_device_count.[{#ID}]'
               delay: '0'
               history: 30d
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[*].[''unsupported_device_count''].first()'
               master_item:
                 key: 'unifi.sites.sysinfo.[{#ID}]'
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
               trigger_prototypes:
-                -
-                  uuid: 8d7b08e8767e418b98aeda07305d35df
+                - uuid: 8d7b08e8767e418b98aeda07305d35df
                   expression: 'last(/Template UniFi Controller/unifi.sites.unsuppoted_device_count.[{#ID}])>0'
                   name: 'UniFi Devices not supported on {HOSTNAME} site [{#DESC}]'
                   priority: HIGH
-            -
-              uuid: 69866caf71d140f6a152324ceb6c7aca
+            - uuid: 69866caf71d140f6a152324ceb6c7aca
               name: 'UniFi Site [{#DESC}] Version'
               type: DEPENDENT
               key: 'unifi.sites.version.[{#ID}]'
@@ -749,45 +629,37 @@ zabbix_export:
               trends: '0'
               value_type: CHAR
               preprocessing:
-                -
-                  type: JSONPATH
+                - type: JSONPATH
                   parameters:
                     - '$.[*].version.first()'
               master_item:
                 key: 'unifi.sites.sysinfo.[{#ID}]'
               tags:
-                -
-                  tag: Application
+                - tag: Application
                   value: UniFi
           trigger_prototypes:
-            -
-              uuid: 7bcf5b73ccc34b7e9cb6bb61149cbfc2
+            - uuid: 7bcf5b73ccc34b7e9cb6bb61149cbfc2
               expression: 'last(/Template UniFi Controller/unifi.up2dateVersion)<>last(/Template UniFi Controller/unifi.sites.version.[{#ID}])'
               name: 'UniFi Update pending on {HOSTNAME} site [{#DESC}]'
               priority: WARNING
           master_item:
             key: unifi.sites
           preprocessing:
-            -
-              type: JAVASCRIPT
+            - type: JAVASCRIPT
               parameters:
                 - |
                   var result = [];
                   var sites = JSON.parse(value);
                   sites.forEach(function(site) {
-                    result.push({"{#ID}": site._id, "{#DESC}": site.desc});
+                    result.push({"{#ID}": site._id, "{#DESC}": site.desc, "{#NAME}": site.name});
                   });
                   return JSON.stringify(result);
       macros:
-        -
-          macro: '{$UNIFI_PASSWORD}'
+        - macro: '{$UNIFI_PASSWORD}'
           value: password
-        -
-          macro: '{$UNIFI_PORT}'
+        - macro: '{$UNIFI_PORT}'
           value: '8443'
-        -
-          macro: '{$UNIFI_UPDATEURL}'
+        - macro: '{$UNIFI_UPDATEURL}'
           value: 'https://fw-update.ubnt.com/api/firmware-latest?filter=eq~~product~~unifi-controller&filter=eq~~channel~~release&filter=eq~~platform~~windows'
-        -
-          macro: '{$UNIFI_USER}'
+        - macro: '{$UNIFI_USER}'
           value: admin
