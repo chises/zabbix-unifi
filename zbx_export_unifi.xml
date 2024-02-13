@@ -26,6 +26,12 @@
                     <key>unifi.sites</key>
                     <delay>5m</delay>
                     <history>7d</history>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UniFi</value>
+                        </tag>
+                    </tags>
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
                     <params>var obj = JSON.parse(value);
@@ -79,6 +85,12 @@ return JSON.stringify(sites);</params>
                     <key>unifi.up2dateVersion</key>
                     <delay>60m</delay>
                     <history>30d</history>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UniFi</value>
+                        </tag>
+                    </tags>
                     <trends>0</trends>
                     <value_type>CHAR</value_type>
                     <params>var obj = JSON.parse(value);
