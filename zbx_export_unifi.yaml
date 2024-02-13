@@ -17,6 +17,9 @@ zabbix_export:
           key: unifi.sites
           delay: 5m
           history: 7d
+          tags:
+            - tag: Application
+              value: UniFi
           trends: '0'
           value_type: TEXT
           params: |
@@ -60,6 +63,9 @@ zabbix_export:
           key: unifi.up2dateVersion
           delay: 60m
           history: 30d
+          tags:
+            - tag: Application
+              value: UniFi
           trends: '0'
           value_type: CHAR
           params: |
